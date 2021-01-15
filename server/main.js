@@ -52,7 +52,7 @@
       });
 
 //configure the port, pool and the databases configurations
-    const PORT = parseInt(process.argv[2]) || parseInt(process.env.APP_PORT) || 3000
+    const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
     const pool = mysql.createPool ({
       host : process.env.MYSQL_SERVER,
       port: process.env.MYSQL_SVR_PORT,

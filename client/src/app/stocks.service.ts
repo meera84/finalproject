@@ -13,13 +13,13 @@ export class StocksService implements CanActivate {
   private token = ""
   userid = ""
   isAdmin: boolean;
-  url = "http://localhost:3000"
+ 
 
   constructor(private http: HttpClient, private router:Router) { }
  
 
   async getStockList(): Promise<any[]> {
-    return await this.http.get<any[]>(`${this.url}/table`)
+    return await this.http.get<any[]>(`/table`)
       .toPromise()
   }
 
@@ -28,18 +28,18 @@ export class StocksService implements CanActivate {
     const params = new HttpParams()
     .set('id',id)
     .set('ticker',ticker)
-    return await this.http.get<any>(`${this.url}/deletefromTable`,{params})
+    return await this.http.get<any>(`/deletefromTable`,{params})
       .toPromise()
   }
   async insertSpac(spac:SpacName): Promise<any> {
     console.info("here",spac)
-    return await this.http.post<any>(`${this.url}/table/`,{spac})
+    return await this.http.post<any>(`/table/`,{spac})
       .toPromise()
   }
 
 
   async getAllStocks(): Promise<any[]> {
-    return await this.http.get<any[]>(`${this.url}/allstocks`)
+    return await this.http.get<any[]>(`/allstocks`)
       .toPromise()
   }
 
@@ -71,7 +71,7 @@ export class StocksService implements CanActivate {
       r=>{
         const spacsList = r;
         console.log('spacslist',spacsList)
-        return this.http.post<any[]>(`${this.url}/spacstocks`,{spacsList})
+        return this.http.post<any[]>(`/spacstocks`,{spacsList})
         .toPromise()
       }) 
       .then(
@@ -86,25 +86,25 @@ export class StocksService implements CanActivate {
   }
 
   async getNews(): Promise<any[]> {
-    return await this.http.get<any[]>(`${this.url}/news`)
+    return await this.http.get<any[]>(`/news`)
       .toPromise()
   }
 
   async sendContact(message:Contact){
     console.log('m',message)
-    return await this.http.post<any>(`${this.url}/contact`,{message})
+    return await this.http.post<any>(`/contact`,{message})
     .toPromise()
   }
 
   //Details Page
   async getStockDetail(symbol){
-    return await this.http.get<any[]>(`${this.url}/stocks/${symbol}`)
+    return await this.http.get<any[]>(`/stocks/${symbol}`)
       .toPromise()
   }
 
   //Google Login
   async authenticate(){
-      window.open(`${this.url}/auth/google`,"mywindow","location=1,status=1,scrollbars=1, width=800,height=800");
+      window.open(`/auth/google`,"mywindow","location=1,status=1,scrollbars=1, width=800,height=800");
      let listener = window.addEventListener('message', (message) => {
        //message will contain google user and details
        this.token = message.data.token
@@ -133,20 +133,20 @@ export class StocksService implements CanActivate {
   async logOut(){
     this.userid="";
     this.isAdmin = false;
-    return await this.http.get<any[]>(`${this.url}/auth/logout`)
+    return await this.http.get<any[]>(`/auth/logout`)
     .toPromise()
   }
 
 
   async addToWatchList(data:AddSpac){
     console.log('d',data)
-    return await this.http.post<any[]>(`${this.url}/watchlist`,{data})
+    return await this.http.post<any[]>(`/watchlist`,{data})
     .toPromise()
   }
 
   async delWatchList(data:deleteSpac){
     console.log('d',data)
-    return await this.http.post<any[]>(`${this.url}/deletewatchlist`,{data})
+    return await this.http.post<any[]>(`/deletewatchlist`,{data})
     .toPromise()
   }
 
@@ -154,7 +154,7 @@ export class StocksService implements CanActivate {
     //userid = userid.toString();
     const params = new HttpParams()
     .set('userid',userid);
-    return await this.http.get<any[]>(`${this.url}/getwatchlist`,{params})
+    return await this.http.get<any[]>(`/getwatchlist`,{params})
     .toPromise()
   }
 
@@ -162,7 +162,7 @@ export class StocksService implements CanActivate {
     //userid = userid.toString();
     const params = new HttpParams()
     .set('userid',userid);
-    return await this.http.get<any[]>(`${this.url}/totalwatchlist`,{params})
+    return await this.http.get<any[]>(`/totalwatchlist`,{params})
     .toPromise()
   }
 
@@ -171,11 +171,6 @@ export class StocksService implements CanActivate {
       return true
     return this.router.parseUrl('/error')
   }
-
-
-
-
-
 
 
 }
