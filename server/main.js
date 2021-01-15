@@ -13,6 +13,7 @@
     const passport = require("passport");
     const GoogleStrategy = require("passport-google-oauth20").Strategy;
     const jwt = require('jsonwebtoken')
+    const fs = require('fs')
    
   
 //passport database check
@@ -54,13 +55,19 @@
     const PORT = parseInt(process.argv[2]) || parseInt(process.env.APP_PORT) || 3000
     const pool = mysql.createPool ({
       host : process.env.MYSQL_SERVER,
-      port: process.env.SVR_PORT,
+      port: process.env.MYSQL_SVR_PORT,
       user: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_SCHEMA,
-      connectionLimit:process.env.MYSQL_CON_LIMIT
+      connectionLimit:process.env.MYSQL_CON_LIMIT,
+      sslmode:'REQUIRED',
+
+      timezone        : '+08:00',
+      ssl             : {
+                        ca : fs.readFileSync(__dirname + '/cert/ca-certificate.crt')
+                        }
     })
-    const MONGO_URL = 'mongodb://localhost:27017'
+    const MONGO_URL = process.env.MONGO_URL
     const MONGO_DATABASE = 'stocklist'
     const MONGO_COLLECTION = 'table'
     const mongoClient = new MongoClient(MONGO_URL, 
@@ -343,6 +350,7 @@
             })
     })
 
+    app.use(express.static(__dirname+'/client'))
 
 //constructing the url queries. One is of Get. Another one is of Insert. 
     //const SQL_querytest="select * from users"
